@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const knex = require('../db')
+const knex = require('../services/db')
 
 // Secret key for JWT (use environment variable in production)
 const JWT_SECRET = 'your-secret-key'

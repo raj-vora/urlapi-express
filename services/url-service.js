@@ -1,4 +1,4 @@
-const knex = require("../db")
+const knex = require("./db")
 const { int2radix64, radix64toint } = require('./radix64-service');
 
 async function createRandomShortCode(author, url) {

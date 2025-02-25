@@ -1,7 +1,7 @@
 // url/server/controllers/links-controller.js
 
 // Import database
-const knex = require('../../services/db')
+const knex = require('../services/db')
 const {
     createCustomShortCode,
     createRandomShortCode,

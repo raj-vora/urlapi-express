@@ -1,6 +1,6 @@
 // url/server/controllers/redirection-controller.js
 
-const knex = require('../../services/db')
+const knex = require('../services/db')
 const findLongUrl = require('../services/url-service').findLongUrl;
 const os = require("os");
 

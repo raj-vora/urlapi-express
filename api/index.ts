@@ -8,9 +8,9 @@ const cors = require('cors')
 const helmet = require('helmet')
 
 // Import routes
-var linksRouter = require('./routes/links-route');
-var redirectionRouter = require('./routes/redirection-route');
-var userRouter = require('./routes/users-route');
+var linksRouter = require('../routes/links-route');
+var redirectionRouter = require('../routes/redirection-route');
+var userRouter = require('../routes/users-route');
 
 // Apply middleware
 // Note: Keep this at the top, above routes
@@ -44,9 +44,9 @@ app.use(function (req, res, next) {
     res.status(404).send('Sorry we could not find that.')
 })
 
-// // Start express app
-// app.listen(3000, function () {
-//     console.log(`Server is running on:3000`)
-// })
+// Start express app
+app.listen(3000, function () {
+    console.log(`Server is running on:3000`)
+})
 
 module.exports = app;

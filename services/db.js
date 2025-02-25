@@ -44,7 +44,7 @@ knex.schema
 
   })
   .catch((error) => {
-    console.error(`There was an error setting up the database: ${error.errors}`)
+    console.error(`There was an error setting up the database: ${error}`)
   })
 
 // Create a table in the database called "links"
