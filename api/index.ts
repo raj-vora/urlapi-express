@@ -20,8 +20,11 @@ app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+app.use('/redirect', redirectionRouter);
+app.use('/user', userRouter);
+
 app.use((req, res, next) => {
-    if (!req.path.includes('/user') && !req.path.includes('health') && !req.headers.authorization) {
+    if (!req.headers.authorization) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
     next();
@@ -30,8 +33,6 @@ app.use((req, res, next) => {
 
 // Implement routes
 app.use('/links', linksRouter);
-app.use('/redirect', redirectionRouter);
-app.use('/user', userRouter);
 
 // Implement 500 error route
 app.use(function (err, req, res, next) {
