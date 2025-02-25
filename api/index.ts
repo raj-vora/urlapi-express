@@ -11,6 +11,7 @@ const helmet = require('helmet')
 var linksRouter = require('./routes/links-route');
 var redirectionRouter = require('./routes/redirection-route');
 var userRouter = require('./routes/users-route');
+var healthRouter = require('./routes/health-route');
 
 // Apply middleware
 // Note: Keep this at the top, above routes
@@ -20,11 +21,12 @@ app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+app.use('/', healthRouter);
 app.use((req, res, next) => {
-  if (!req.path.includes ('/user') && !req.headers.authorization) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-  next();
+    if (!req.path.includes('/user') && !req.headers.authorization) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    next();
 });
 
 
@@ -35,13 +37,18 @@ app.use('/user', userRouter);
 
 // Implement 500 error route
 app.use(function (err, req, res, next) {
-  console.error(err.stack)
-  res.status(500).send('Something is broken.')
+    console.error(err.stack)
+    res.status(500).send('Something is broken.')
 })
 
 // Implement 404 error route
 app.use(function (req, res, next) {
-  res.status(404).send('Sorry we could not find that.')
+    res.status(404).send('Sorry we could not find that.')
 })
+
+// Start express app
+app.listen(3000, function() {
+    console.log(`Server is running on: 3000`)
+  })
 
 module.exports = app;
