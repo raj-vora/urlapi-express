@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
-    if (!req.path.includes('/user') && !req.headers.authorization) {
+    if (!req.path.includes('/user') && !req.path.includes('health') && !req.headers.authorization) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
     next();
@@ -43,5 +43,10 @@ app.use(function (err, req, res, next) {
 app.use(function (req, res, next) {
     res.status(404).send('Sorry we could not find that.')
 })
+
+// // Start express app
+// app.listen(3000, function () {
+//     console.log(`Server is running on:3000`)
+// })
 
 module.exports = app;
