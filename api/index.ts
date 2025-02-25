@@ -11,7 +11,6 @@ const helmet = require('helmet')
 var linksRouter = require('./routes/links-route');
 var redirectionRouter = require('./routes/redirection-route');
 var userRouter = require('./routes/users-route');
-var healthRouter = require('./routes/health-route');
 
 // Apply middleware
 // Note: Keep this at the top, above routes
@@ -21,7 +20,6 @@ app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/', healthRouter);
 app.use((req, res, next) => {
     if (!req.path.includes('/user') && !req.headers.authorization) {
         return res.status(401).json({ message: 'Unauthorized' });
