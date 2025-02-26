@@ -20,10 +20,16 @@ app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+app.use((req, res, next) => {
+    console.log("1 "+req.path);
+    next();
+});
+
 app.use('/redirect', redirectionRouter);
 app.use('/user', userRouter);
 
 app.use((req, res, next) => {
+    console.log(req.path);
     if (!req.headers.authorization) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -46,8 +52,8 @@ app.use(function (req, res, next) {
 })
 
 // Start express app
-app.listen(3000, function () {
-    console.log(`Server is running on:3000`)
-})
+// app.listen(3000, function () {
+//     console.log(`Server is running on:3000`)
+// })
 
 module.exports = app;
