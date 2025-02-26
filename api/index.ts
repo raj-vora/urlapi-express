@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const compression = require('compression')
 const cors = require('cors')
 const helmet = require('helmet')
-
+console.log("first log");
 // Import routes
 var linksRouter = require('../routes/links-route');
 var redirectionRouter = require('../routes/redirection-route');
@@ -52,8 +52,8 @@ app.use(function (req, res, next) {
 })
 
 // Start express app
-// app.listen(3000, function () {
-//     console.log(`Server is running on:3000`)
-// })
+app.listen(3000, function () {
+    console.log(`Server is running on:3000`)
+})
 
 module.exports = app;
