@@ -10,7 +10,6 @@ const { health } = require('../controllers/redirection-controller.js');
 // Create router
 const router = express.Router()
 
-router.get('/health', redirectionController.health);
 // Add route for GET request to retrieve all book
 // In server.js, redirection route is specified as '/redirection'
 // this means that '/:code' translates to '/redirection/:code'
