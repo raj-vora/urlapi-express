@@ -9,4 +9,4 @@ const { health } = require('../controllers/health-controller.js');
 // Create router
 const router = express.Router()
 
-router.get('/', health);
+router.get('/health', health);
