@@ -6,8 +6,9 @@ const bodyParser = require('body-parser')
 const compression = require('compression')
 const cors = require('cors')
 const helmet = require('helmet')
-console.log("first log");
+
 // Import routes
+var healthRouter = require('../routes/health-route');
 var linksRouter = require('../routes/links-route');
 var redirectionRouter = require('../routes/redirection-route');
 var userRouter = require('../routes/users-route');
@@ -20,16 +21,10 @@ app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use((req, res, next) => {
-    console.log("1 "+req.path);
-    next();
-});
-
-app.use('/redirect', redirectionRouter);
 app.use('/user', userRouter);
+app.use('/health', healthRouter);
 
 app.use((req, res, next) => {
-    console.log(req.path);
     if (!req.headers.authorization) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -38,6 +33,7 @@ app.use((req, res, next) => {
 
 
 // Implement routes
+app.use('/redirect', redirectionRouter);
 app.use('/links', linksRouter);
 
 // Implement 500 error route
