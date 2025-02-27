@@ -25,8 +25,10 @@ app.use('/user', userRouter);
 app.use('/', healthRouter);
 
 app.use((req, res, next) => {
-    if (!req.headers.authorization) {
-        return res.status(401).json({ message: 'Unauthorized' });
+    if (!req.path.includes('/health')) {
+        if (!req.headers.authorization) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
     }
     next();
 });
@@ -48,8 +50,8 @@ app.use(function (req, res, next) {
 })
 
 // Start express app
-app.listen(3000, function () {
-    console.log(`Server is running on:3000`)
-})
+// app.listen(3000, function () {
+//     console.log(`Server is running on:3000`)
+// })
 
 module.exports = app;
