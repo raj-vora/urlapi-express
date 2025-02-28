@@ -1,7 +1,8 @@
 // url/server/controllers/links-controller.js
 
 // Import database
-const knex = require('../services/db')
+const knex = require('../services/db');
+const { radix64toint } = require('../services/radix64-service');
 const {
     createCustomShortCode,
     createRandomShortCode,
@@ -12,9 +13,11 @@ const {
 exports.linksAll = async (req, res) => {
     // Get all links from database
     knex
-        .where('author', req.params.username) // select all records
+        .column('author', 'code', 'url', 'clicks')
         .from('links') // from 'links' table
+        .where('author', req.params.username) // select all records
         .then(userData => {
+            console.log(userData)
             // Send links extracted from database in response
             res.json(userData)
         })
@@ -28,10 +31,10 @@ exports.linksOne = async (req, res) => {
     const code = req.params.code;
 
     const url = await findLongUrl(code);
-    if(url){
-        res.json({message: "success", "url": url});
+    if (url) {
+        res.json({ message: "success", "url": url });
     } else {
-        res.status(404).json({error: "no such shortcode created"});
+        res.status(404).json({ error: "no such shortcode created" });
     }
 }
 
@@ -46,26 +49,29 @@ exports.linksCreate = async (req, res) => {
         const link = await createRandomShortCode(author, url);
         console.log(link);
         res.json({ message: "success", url: encodeURIComponent(link.url), code: link.code });
-    } 
+    }
 
     try {
         const link = await createCustomShortCode(author, code, url);
         console.log(link);
         res.json({ message: "success", url: encodeURIComponent(link.url), code: link.code });
-    } catch(e) {
+    } catch (e) {
         console.log(e);
-        return res.status(400).json({error: e.message});
+        return res.status(400).json({ error: e.message });
     }
 }
 
 // Remove specific URL
 exports.linksDelete = async (req, res) => {
     // Find specific URL in the database and remove it
+    console.log(req.body);
+    id = radix64toint(req.body.code);
     knex('links')
-        .where('code', req.body.code) // find correct record based on id
+        .where('id', id) // find correct record based on id
         .del() // delete the record
-        .then(() => {
+        .then((code) => {
             // Send a success message in response
+            console.log(code);
             res.json({ message: `URL ${req.body.code} deleted.` })
         })
         .catch(err => {

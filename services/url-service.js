@@ -49,12 +49,11 @@ async function findLongUrl(code) {
         .select('clicks')
         .where('id', id)
         .first()
-        
-    console.log(clicks);
-        
-    var link = await knex('links')
+                
+    await knex('links')
         .update('clicks', clicks.clicks+1)
-        .where('id', id)
+        .where('id', id);
+
     return await knex('links')
         .where('id', id)
         .first();
