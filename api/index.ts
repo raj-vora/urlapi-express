@@ -13,6 +13,13 @@ var linksRouter = require('../routes/links-route');
 var redirectionRouter = require('../routes/redirection-route');
 var userRouter = require('../routes/users-route');
 
+function checkAuth(req, res, next) {
+    if (!req.headers.authorization) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    next();
+}
+
 // Apply middleware
 // Note: Keep this at the top, above routes
 app.use(cors())
@@ -22,16 +29,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use('/user', userRouter);
-app.use('/', healthRouter);
+app.use('/health', healthRouter);
 
-app.use((req, res, next) => {
-    if (!req.path.includes('/health')) {
-        if (!req.headers.authorization) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-    }
-    next();
-});
+app.use(checkAuth);
 
 
 // Implement routes
