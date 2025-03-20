@@ -8,7 +8,6 @@ const cors = require('cors')
 const helmet = require('helmet')
 
 // Import routes
-var healthRouter = require('../routes/health-route');
 var linksRouter = require('../routes/links-route');
 var redirectionRouter = require('../routes/redirection-route');
 var userRouter = require('../routes/users-route');
@@ -22,13 +21,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use('/user', userRouter);
-app.use('/', healthRouter);
+const { health } = require('../controllers/health-controller');
+app.get('/health', health);
 
 app.use((req, res, next) => {
-    if (!req.path.includes('/health')) {
-        if (!req.headers.authorization) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
+    if (!req.headers.authorization) {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
     next();
 });
